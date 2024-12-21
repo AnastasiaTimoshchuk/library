@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+</head>
+<body>
+<a data-th-href="@{/library/books/create}">+ Добавить книгу</a>
+<br/>
+<h1>Список книг</h1>
+<form method="get" data-th-action="@{/library/books/list}">
+    <label>
+        <button type="submit">Обновить</button>
+    </label>
+</form>
+<br/>
+<div>
+    <table style="border: 1px solid black; border-collapse: collapse;">
+        <thead>
+        <tr>
+            <th style="border: 1px solid black; padding: 4px;">ID</th>
+            <th style="border: 1px solid black; padding: 4px;">Название</th>
+            <th style="border: 1px solid black; padding: 4px;">Автор</th>
+            <th style="border: 1px solid black; padding: 4px;">Статус</th>
+            <th style="border: 1px solid black; padding: 4px;">Дата взятия</th>
+            <th style="border: 1px solid black; padding: 4px;">Читатель</th>
+            <th style="border: 1px solid black; padding: 4px;">Email читателя</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="book : ${books}">
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${book.id}"></td>
+            <td style="border: 1px solid black; padding: 4px;">
+                <a data-th-href="@{/library/books/{bookId}(bookId=${book.id})}"
+                   data-th-text="${book.title}"></a>
+            </td>
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${book.author.lastName + ' ' + book.author.firstName + (book.author.middleName != null ? ' ' + book.author.middleName : '')}" />
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${book.isBorrowed == true ? 'Взята' : 'Свободна'}" />
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${book.borrowDate != null ? book.borrowDate : ''}" />
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${book.reader != null ? (book.reader.lastName + ' ' + book.reader.firstName + (book.reader.middleName != null ? ' ' + book.reader.middleName : '')) : ''}" />
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${book.reader != null ? book.reader.email : ''}" />
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br/>
+<div>
+    <ul style="display: flex; list-style-type: none; padding: 0; margin: 0;">
+        <li th:each="page : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${page == currentPage} ? 'active'">
+            <a th:href="@{/library/books/list(page=${page},size=20)}" th:text="${page + 1}"
+               style="margin-right: 5px; padding: 8px; text-decoration: none; color: #000;"></a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

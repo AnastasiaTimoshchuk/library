@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: library
+      POSTGRES_PASSWORD: library
+      POSTGRES_DB: library
+    networks:
+      - librarynetwork
+  server:
+    container_name: server
+    build:
+      args:
+        JAR_FILE: library-service/target/library-service-1.0-SNAPSHOT.jar
+    ports:
+      - "8081:8081"
+    networks:
+      - librarynetwork
+    depends_on:
+      - postgres
+  client:
+#    scale: 2
+    build:
+      args:
+        JAR_FILE: library-ui/target/library-ui-1.0-SNAPSHOT.jar
+    ports:
+      - "8080:8080"
+#      - "8080-8090:8080"
+    networks:
+      - librarynetwork
+    depends_on:
+      - server
+networks:
+  librarynetwork:
+    driver: bridge

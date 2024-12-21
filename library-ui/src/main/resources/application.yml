@@ -1,0 +1,4 @@
+service:
+  library-ui:
+    uri: http://localhost:8081
+#    uri: http://server:8081

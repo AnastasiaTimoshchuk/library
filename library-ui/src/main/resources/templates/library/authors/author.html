@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<a data-th-href="@{/library/authors/list}">&larr; К списку авторов</a>
+<br/>
+<div data-th-if="${errors}">
+    <h2>Ошибки</h2>
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
+<br/>
+<ul>
+    <li><strong>ID</strong>: <span data-th-text="${author.id}" ></span></li>
+    <li><strong>Фамилия</strong>: <span data-th-text="${author.lastName}" ></span></li>
+    <li><strong>Имя</strong>: <span data-th-text="${author.firstName}" ></span></li>
+    <li><strong>Отчество</strong>: <span data-th-text="${author.middleName != null ? ' ' + author.middleName : ''}" ></span></li>
+    <li><strong>Дата рождения</strong>: <span data-th-text="${author.birthDate}" ></span></li>
+</ul>
+<br/>
+<form method="post" data-th-action="@{/library/authors/{authorId}/delete(authorId=${author.id})}">
+    <input type="hidden" name="id" data-th-value="${author.id}">
+    <input type="hidden" name="firstName" data-th-value="${author.firstName}">
+    <input type="hidden" name="lastName" data-th-value="${author.lastName}">
+    <input type="hidden" name="middleName" data-th-value="${author.middleName}">
+    <input type="hidden" name="birthDate" data-th-value="${author.birthDate}">
+    <label>
+        <button type="submit">Удалить автора</button>
+    </label>
+</form>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Новая книга</title>
+</head>
+<body>
+<a data-th-href="@{/library/books/list}">&larr; К списку книг</a>
+<br/>
+<h1>Новая книга</h1>
+<div data-th-if="${errors}">
+    <h2>Допущены ошибки</h2>
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
+<form method="post" data-th-action="@{/library/books/create}">
+    <label>
+        Название:
+        <input type="text" name="title" data-th-value="${payload?.title}" style="width: 40%; padding: 5px">
+    </label><br>
+    <br/>
+    <label>
+        Автор:
+        <select name="authorId" style="width: 50%; padding: 5px;">
+            <option value="">Выберите автора</option>
+            <option data-th-each="author : ${authors}"
+                    data-th-value="${author.id}"
+                    data-th-text="${author.id + ' - '+ author.lastName + ' ' + author.firstName + ' ' + (author.middleName != null ? ' ' + author.middleName : '')}"
+                    data-th-selected="${payload?.authorId == author.id}"></option>
+        </select>
+<!--        Автор (ID):-->
+<!--        <input type="text" name="authorId" data-th-value="${payload?.authorId}" style="width: 20%; padding: 5px;">-->
+    </label><br>
+    <br/>
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>

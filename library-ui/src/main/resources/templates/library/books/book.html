@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${book.title}]]</title>
+</head>
+<body>
+<a data-th-href="@{/library/books/list}">&larr; К списку книг</a>
+<br/>
+<h1 data-th-text="${book.title}"></h1>
+<br/>
+<ul>
+    <li><strong>ID</strong>: <span data-th-text="${book.id}" ></span></li>
+    <li><strong>Название</strong>: <span data-th-text="${book.title}" ></span></li>
+    <li><strong>Автор</strong>: <span data-th-text="${book.author.lastName + ' ' + book.author.firstName + (book.author.middleName != null ? ' ' + book.author.middleName : '')}" ></span></li>
+    <li><strong>Статус</strong>: <span data-th-text="${book.isBorrowed == true ? 'Взята' : 'Свободна'}" ></span></li>
+
+    <ul th:if="${book.isBorrowed}">
+        <li><strong>Дата взятия</strong>: <span data-th-text="${book.borrowDate != null ? book.borrowDate : ''}" ></span></li>
+        <li><strong>Читатель (ID)</strong>: <span data-th-text="${book.reader != null ? book.reader.id : ''}" ></span></li>
+        <li><strong>Читатель</strong>: <span data-th-text="${book.reader != null ? (book.reader.lastName + ' ' + book.reader.firstName + (book.reader.middleName != null ? ' ' + book.reader.middleName : '')) : ''}" ></span></li>
+        <li><strong>Email читателя</strong>: <span data-th-text="${book.reader != null ? book.reader.email : ''}" ></span></li>
+
+        <form method="post" data-th-action="@{/library/books/return}">
+            <input type="hidden" name="bookId" data-th-value="${book.id}">
+            <input type="hidden" name="readerId" data-th-value="${book.reader.id}">
+            <br/>
+            <label>
+                <button type="submit">Вернуть книгу</button>
+            </label>
+        </form>
+    </ul>
+
+    <ul th:if="${!book.isBorrowed}">
+        <form method="post" data-th-action="@{/library/books/borrow}">
+            <input type="hidden" name="bookId" data-th-value="${book.id}">
+            <label>
+                Читатель:
+                <select name="readerId" style="width: 50%; padding: 5px;">
+                    <option value="">Выберите читателя</option>
+                    <option data-th-each="reader : ${readers}"
+                            data-th-value="${reader.id}"
+                            data-th-text="${reader.id + ' - '+ reader.lastName + ' ' + reader.firstName + ' ' + (reader.middleName != null ? ' ' + reader.middleName : '') + ' (' + reader.email + ')'}"
+                            data-th-selected="${payload?.readerId == reader.id}"></option>
+                </select>
+<!--                Читатель (ID):-->
+<!--                <input type="text" name="readerId" data-th-value="${readerId}" style="width: 40%; padding: 5px">-->
+            </label><br>
+            <br/>
+            <label>
+                <button type="submit">Взять книгу</button>
+            </label>
+        </form>
+        <br/>
+        <form method="post" data-th-action="@{/library/books/{bookId}/delete(bookId=${book.id})}">
+            <label>
+                <button type="submit">Удалить книгу</button>
+            </label>
+        </form>
+    </ul>
+</ul>
+</body>
+</html>

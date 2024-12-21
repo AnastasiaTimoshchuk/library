@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Новый автор</title>
+</head>
+<body>
+<a data-th-href="@{/library/authors/list}">&larr; К списку авторов</a>
+<br/>
+<h1>Новый автор</h1>
+<div data-th-if="${errors}">
+    <h2>Допущены ошибки</h2>
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
+<form method="post" data-th-action="@{/library/authors/create}">
+    <label>
+        Фамилия:
+        <input type="text" name="lastName" data-th-value="${payload?.lastName}" style="width: 40%; padding: 5px">
+    </label><br>
+    <br/>
+    <label>
+        Имя:
+        <input type="text" name="firstName" data-th-value="${payload?.firstName}" style="width: 40%; padding: 5px">
+    </label><br>
+    <br/>
+    <label>
+        Отчество:
+        <input type="text" name="middleName" data-th-value="${payload?.middleName}" style="width: 40%; padding: 5px">
+    </label><br>
+    <br/>
+    <label>
+        Дата рождения:
+        <input type="date" name="birthDate" data-th-value="${payload?.birthDate}" data-th-attr="max=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" style="width: 40%; padding: 5px">
+    </label><br>
+    <br/>
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>

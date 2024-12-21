@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список авторов</title>
+</head>
+<body>
+<a data-th-href="@{/library/authors/create}">+ Добавить автора</a>
+<br/>
+<h1>Список авторов</h1>
+<form method="get" data-th-action="@{/library/authors/list}">
+    <label>
+        <button type="submit">Обновить</button>
+    </label>
+</form>
+<br/>
+<div>
+    <table style="border: 1px solid black; border-collapse: collapse;">
+        <thead>
+        <tr>
+            <th style="border: 1px solid black; padding: 4px;">ID</th>
+            <th style="border: 1px solid black; padding: 4px;">Фамилия</th>
+            <th style="border: 1px solid black; padding: 4px;">Имя</th>
+            <th style="border: 1px solid black; padding: 4px;">Отчество</th>
+            <th style="border: 1px solid black; padding: 4px;">Дата рождения</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="author : ${authors}">
+            <td style="border: 1px solid black; padding: 4px;">
+                <a th:href="@{/library/authors/{authorId}(authorId=${author.id})}"
+                   th:text="${author.id}"></a>
+            </td>
+            <td style="border: 1px solid black; padding: 4px;" th:text="${author.lastName}"></td>
+            <td style="border: 1px solid black; padding: 4px;" th:text="${author.firstName}"></td>
+            <td style="border: 1px solid black; padding: 4px;" th:text="${author.middleName}"></td>
+            <td style="border: 1px solid black; padding: 4px;" th:text="${author.birthDate}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br/>
+<div>
+    <ul style="display: flex; list-style-type: none; padding: 0; margin: 0;">
+        <li th:each="page : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${page == currentPage} ? 'active'">
+            <a th:href="@{/library/authors/list(page=${page},size=10)}" th:text="${page + 1}"
+               style="margin-right: 5px; padding: 8px; text-decoration: none; color: #000;"></a>
+        </li>
+    </ul>
+</div>
+<!--<table style="border: 1px solid black; border-collapse: collapse;">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th style="border: 1px solid black; padding: 4px;">ID</th>-->
+<!--        <th style="border: 1px solid black; padding: 4px;">Фамилия</th>-->
+<!--        <th style="border: 1px solid black; padding: 4px;">Имя</th>-->
+<!--        <th style="border: 1px solid black; padding: 4px;">Отчество</th>-->
+<!--        <th style="border: 1px solid black; padding: 4px;">Дата рождения</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr data-th-each="author : ${authors}">-->
+<!--        <td style="border: 1px solid black; padding: 4px;">-->
+<!--            <a data-th-href="@{/library/authors/{authorId}(authorId=${author.id})}"-->
+<!--               data-th-text="${author.id}"></a>-->
+<!--        </td>-->
+<!--        <td style="border: 1px solid black; padding: 4px;" data-th-text="${author.lastName}" />-->
+<!--        <td style="border: 1px solid black; padding: 4px;" data-th-text="${author.firstName}" />-->
+<!--        <td style="border: 1px solid black; padding: 4px;" data-th-text="${(author.middleName != null ? ' ' + author.middleName : '')}" />-->
+<!--        <td style="border: 1px solid black; padding: 4px;" data-th-text="${author.birthDate}" />-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+</body>
+</html>

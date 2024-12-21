@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<a data-th-href="@{/library/readers/list}">&larr; К списку читателей</a>
+<br/>
+<div data-th-if="${errors}">
+    <h2>Ошибки</h2>
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
+<br/>
+<ul>
+    <li><strong>ID</strong>: <span data-th-text="${reader.id}" ></span></li>
+    <li><strong>Фамилия</strong>: <span data-th-text="${reader.lastName}" ></span></li>
+    <li><strong>Имя</strong>: <span data-th-text="${reader.firstName}" ></span></li>
+    <li><strong>Отчество</strong>: <span data-th-text="${reader.middleName != null ? ' ' + reader.middleName : ''}" ></span></li>
+    <li><strong>Email</strong>: <span data-th-text="${reader.email}" ></span></li>
+</ul>
+<br/>
+<br/>
+<form method="post" data-th-action="@{/library/readers/{readerId}/delete(readerId=${reader.id})}">
+    <input type="hidden" name="id" data-th-value="${reader.id}">
+    <input type="hidden" name="firstName" data-th-value="${reader.firstName}">
+    <input type="hidden" name="lastName" data-th-value="${reader.lastName}">
+    <input type="hidden" name="middleName" data-th-value="${reader.middleName}">
+    <input type="hidden" name="email" data-th-value="${reader.email}">
+    <label>
+        <button type="submit">Удалить читателя</button>
+    </label>
+</form>
+</body>
+</html>

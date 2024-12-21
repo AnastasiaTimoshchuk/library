@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список читателей</title>
+</head>
+<body>
+<a data-th-href="@{/library/readers/create}">+ Добавить читателя</a>
+<br/>
+<h1>Список читателей</h1>
+<form method="get" data-th-action="@{/library/readers/list}">
+    <label>
+        <button type="submit">Обновить</button>
+    </label>
+</form>
+<br/>
+<div>
+    <table style="border: 1px solid black; border-collapse: collapse;">
+        <thead>
+        <tr>
+            <th style="border: 1px solid black; padding: 4px;">ID</th>
+            <th style="border: 1px solid black; padding: 4px;">Фамилия</th>
+            <th style="border: 1px solid black; padding: 4px;">Имя</th>
+            <th style="border: 1px solid black; padding: 4px;">Отчество</th>
+            <th style="border: 1px solid black; padding: 4px;">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="reader : ${readers}">
+            <td style="border: 1px solid black; padding: 4px;">
+                <a data-th-href="@{/library/readers/{readerId}(readerId=${reader.id})}"
+                   data-th-text="${reader.id}"></a>
+            </td>
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${reader.lastName}" />
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${reader.firstName}" />
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${(reader.middleName != null ? ' ' + reader.middleName : '')}" />
+            <td style="border: 1px solid black; padding: 4px;" data-th-text="${reader.email}" />
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br/>
+<div>
+    <ul style="display: flex; list-style-type: none; padding: 0; margin: 0;">
+        <li th:each="page : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${page == currentPage} ? 'active'">
+            <a th:href="@{/library/readers/list(page=${page},size=10)}" th:text="${page + 1}"
+               style="margin-right: 5px; padding: 8px; text-decoration: none; color: #000;"></a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
