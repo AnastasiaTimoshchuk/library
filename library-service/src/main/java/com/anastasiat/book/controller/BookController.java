@@ -8,12 +8,14 @@ import com.anastasiat.exception.NotExistsException;
 import com.anastasiat.library.service.LibraryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Locale;
 import java.util.Map;
 
 @RestController
@@ -23,6 +25,7 @@ public class BookController {
 
     private final BookService bookService;
     private final LibraryService libraryService;
+    private final MessageSource messageSource;
 
     @GetMapping("/{bookId}")
     public Book findBookById(@PathVariable("bookId") Integer bookId) {
@@ -57,22 +60,30 @@ public class BookController {
             );
             return ResponseEntity
                     .created(uriComponentsBuilder
-                            .replacePath("/library/books/{bookId}")
+                            .replacePath("/library-api/books/{bookId}")
                             .build(Map.of("bookId", book.getId())))
                     .body(book);
         }
     }
 
     @PostMapping("/borrow")
-    public ResponseEntity<?> borrowBook(@RequestParam Integer readerId, @RequestParam Integer bookId) {
+    public ResponseEntity<?> borrowBook(
+            @RequestParam Integer readerId,
+            @RequestParam Integer bookId,
+            Locale locale
+    ) {
         libraryService.borrowBook(readerId, bookId);
-        return ResponseEntity.ok("Книга успешно взята читателем");
+        return ResponseEntity.ok(messageSource.getMessage("library.ok.book.borrowed", null, locale));
     }
 
     @PostMapping("/return")
-    public ResponseEntity<?> returnBook(@RequestParam Integer readerId, @RequestParam Integer bookId) {
+    public ResponseEntity<?> returnBook(
+            @RequestParam Integer readerId,
+            @RequestParam Integer bookId,
+            Locale locale
+    ) {
         libraryService.returnBook(readerId, bookId);
-        return ResponseEntity.ok("Книга успешно возвращена читателем");
+        return ResponseEntity.ok(messageSource.getMessage("library.ok.book.returned", null, locale));
     }
 
     @DeleteMapping("/{bookId}")

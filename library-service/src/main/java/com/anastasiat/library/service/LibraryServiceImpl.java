@@ -71,7 +71,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     @Transactional
     public void returnBook(Integer readerId, Integer bookId) {
-        Book book = bookService.findBookById(bookId)
+        Book book = bookService.findBookByIdForUpdate(bookId)
                 .orElseThrow(() -> new NotExistsException("library.errors.book.not_found"));
 
         if (!book.getIsBorrowed()) {

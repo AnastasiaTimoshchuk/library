@@ -62,7 +62,7 @@ public class AuthorController {
             );
             return ResponseEntity
                     .created(uriComponentsBuilder
-                            .replacePath("/library/authors/{authorId}")
+                            .replacePath("/library-api/authors/{authorId}")
                             .build(Map.of("authorId", author.getId())))
                     .body(author);
         }

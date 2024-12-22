@@ -62,7 +62,7 @@ public class ReaderController {
             );
             return ResponseEntity
                     .created(uriComponentsBuilder
-                            .replacePath("/library/readers/{readerId}")
+                            .replacePath("/library-api/readers/{readerId}")
                             .build(Map.of("readerId", reader.getId())))
                     .body(reader);
         }
