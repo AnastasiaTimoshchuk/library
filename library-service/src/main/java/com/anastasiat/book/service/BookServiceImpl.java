@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -67,13 +66,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findBooksByReaderId(Integer readerId) {
-        return bookRepository.findByReaderId(readerId);
+    public boolean existBooksByReaderId(Integer readerId) {
+        return bookRepository.existsByReaderId(readerId);
     }
 
     @Override
-    public List<Book> findBooksByAuthorId(Integer authorId) {
-        return bookRepository.findByAuthorId(authorId);
+    public boolean existBooksByAuthorId(Integer authorId) {
+        return bookRepository.existsByAuthorId(authorId);
     }
 
     @Override

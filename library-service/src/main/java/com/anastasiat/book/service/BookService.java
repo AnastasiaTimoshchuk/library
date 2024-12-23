@@ -5,7 +5,6 @@ import com.anastasiat.book.entity.Book;
 import com.anastasiat.book.entity.BookPage;
 import com.anastasiat.reader.entity.Reader;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
@@ -22,9 +21,9 @@ public interface BookService {
 
     Optional<Book> findBookByTitleAndAuthorId(String title, Integer authorId);
 
-    List<Book> findBooksByReaderId(Integer readerId);
+    boolean existBooksByAuthorId(Integer readerId);
 
-    List<Book> findBooksByAuthorId(Integer authorId);
+    boolean existBooksByReaderId(Integer authorId);
 
     void deleteBookById(Integer bookId);
 }

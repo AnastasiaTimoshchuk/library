@@ -28,7 +28,7 @@ public class LibraryServiceImpl implements LibraryService {
     public Book createBook(String title, Integer authorId) {
 
         Author author = authorService.findAuthorById(authorId)
-                .orElseThrow(() -> new AlreadyExistsException("library.errors.author.not_found"));
+                .orElseThrow(() -> new NotExistsException("library.errors.author.not_found"));
 
         if (bookService.findBookByTitleAndAuthorId(title, authorId).isPresent()) {
             throw new AlreadyExistsException("library.errors.book.already_exists");
@@ -78,7 +78,7 @@ public class LibraryServiceImpl implements LibraryService {
             throw new UnavailableOperationException("library.errors.book.available");
         }
 
-        if (!readerId.equals(book.getReader().getId())) {
+        if (book.getReader() != null && !readerId.equals(book.getReader().getId())) {
             throw new UnavailableOperationException("library.errors.book.not_available");
         }
 

@@ -139,12 +139,12 @@ class AuthorServiceImplTest {
         Author author = new Author();
 
         when(authorRepository.findById(authorId)).thenReturn(Optional.of(author));
-        when(bookService.findBooksByAuthorId(authorId)).thenReturn(Collections.emptyList());
+        when(bookService.existBooksByAuthorId(authorId)).thenReturn(false);
 
         assertDoesNotThrow(() -> authorService.deleteAuthor(authorId));
 
         verify(authorRepository, times(1)).findById(authorId);
-        verify(bookService, times(1)).findBooksByAuthorId(authorId);
+        verify(bookService, times(1)).existBooksByAuthorId(authorId);
         verify(authorRepository, times(1)).deleteById(authorId);
     }
 
@@ -155,12 +155,12 @@ class AuthorServiceImplTest {
         Book book = new Book();
 
         when(authorRepository.findById(authorId)).thenReturn(Optional.of(author));
-        when(bookService.findBooksByAuthorId(authorId)).thenReturn(List.of(book));
+        when(bookService.existBooksByAuthorId(authorId)).thenReturn(true);
 
         assertThrows(UnavailableOperationException.class, () -> authorService.deleteAuthor(authorId));
 
         verify(authorRepository, times(1)).findById(authorId);
-        verify(bookService, times(1)).findBooksByAuthorId(authorId);
+        verify(bookService, times(1)).existBooksByAuthorId(authorId);
         verify(authorRepository, never()).deleteById(authorId);
     }
 
@@ -173,7 +173,7 @@ class AuthorServiceImplTest {
         assertThrows(NotExistsException.class, () -> authorService.deleteAuthor(authorId));
 
         verify(authorRepository, times(1)).findById(authorId);
-        verify(bookService, never()).findBooksByAuthorId(authorId);
+        verify(bookService, never()).existBooksByAuthorId(authorId);
         verify(authorRepository, never()).deleteById(authorId);
     }
 }

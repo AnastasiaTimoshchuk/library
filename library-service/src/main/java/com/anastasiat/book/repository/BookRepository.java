@@ -18,9 +18,9 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
 
     Optional<Book> findByTitleAndAuthorId(String title, Integer authorId);
 
-    List<Book> findByAuthorId(Integer authorId);
+    boolean existsByReaderId(Integer readerId);
 
-    List<Book> findByReaderId(Integer readerId);
+    boolean existsByAuthorId(Integer authorId);
 
     Page<Book> findAll(Pageable pageable);
 

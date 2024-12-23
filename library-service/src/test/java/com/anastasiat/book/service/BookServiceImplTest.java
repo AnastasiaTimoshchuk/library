@@ -133,27 +133,23 @@ class BookServiceImplTest {
     }
 
     @Test
-    void testFindBooksByReaderId() {
-        when(bookRepository.findByReaderId(1)).thenReturn(List.of(book));
+    void testExistBooksByReaderId() {
+        when(bookRepository.existsByReaderId(1)).thenReturn(true);
 
-        List<Book> books = bookService.findBooksByReaderId(1);
+        boolean hasBook = bookService.existBooksByReaderId(1);
 
-        assertNotNull(books);
-        assertEquals(1, books.size());
-        assertEquals(book, books.get(0));
-        verify(bookRepository, times(1)).findByReaderId(1);
+        assertTrue(hasBook);
+        verify(bookRepository, times(1)).existsByReaderId(1);
     }
 
     @Test
-    void testFindBooksByAuthorId() {
-        when(bookRepository.findByAuthorId(1)).thenReturn(List.of(book));
+    void testExistBooksByAuthorId() {
+        when(bookRepository.existsByAuthorId(1)).thenReturn(true);
 
-        List<Book> books = bookService.findBooksByAuthorId(1);
+        boolean hasBook = bookService.existBooksByAuthorId(1);
 
-        assertNotNull(books);
-        assertEquals(1, books.size());
-        assertEquals(book, books.get(0));
-        verify(bookRepository, times(1)).findByAuthorId(1);
+        assertTrue(hasBook);
+        verify(bookRepository, times(1)).existsByAuthorId(1);
     }
 
     @Test

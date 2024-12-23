@@ -1,6 +1,5 @@
 package com.anastasiat.reader.service;
 
-import com.anastasiat.book.entity.Book;
 import com.anastasiat.book.service.BookService;
 import com.anastasiat.exception.AlreadyExistsException;
 import com.anastasiat.exception.NotExistsException;
@@ -14,9 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -73,8 +70,7 @@ public class ReaderServiceImpl implements ReaderService {
         readerRepository.findById(readerId)
                 .orElseThrow(() -> new NotExistsException("library.errors.reader.not_found"));
 
-        List<Book> books = bookService.findBooksByReaderId(readerId);
-        if (!CollectionUtils.isEmpty(books)) {
+        if (bookService.existBooksByReaderId(readerId)) {
             throw new UnavailableOperationException("library.errors.reader.delete_unavailable");
         }
         readerRepository.deleteById(readerId);

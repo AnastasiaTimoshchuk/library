@@ -3,7 +3,6 @@ package com.anastasiat.author.service;
 import com.anastasiat.author.entity.Author;
 import com.anastasiat.author.entity.AuthorPage;
 import com.anastasiat.author.repository.AuthorRepository;
-import com.anastasiat.book.entity.Book;
 import com.anastasiat.book.service.BookService;
 import com.anastasiat.exception.AlreadyExistsException;
 import com.anastasiat.exception.NotExistsException;
@@ -14,10 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -78,8 +75,7 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.findById(authorId)
                 .orElseThrow(() -> new NotExistsException("library.errors.author.not_found"));
 
-        List<Book> books = bookService.findBooksByAuthorId(authorId);
-        if (!CollectionUtils.isEmpty(books)) {
+        if (bookService.existBooksByAuthorId(authorId)) {
             throw new UnavailableOperationException("library.errors.author.delete_unavailable");
         }
         authorRepository.deleteById(authorId);

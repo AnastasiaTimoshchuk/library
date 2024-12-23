@@ -121,7 +121,7 @@ class ReaderServiceImplTest {
     @Test
     void deleteReaderById_ShouldThrowException_WhenBooksExist() {
         when(readerRepository.findById(1)).thenReturn(Optional.of(new Reader()));
-        when(bookService.findBooksByReaderId(1)).thenReturn(List.of(new Book()));
+        when(bookService.existBooksByReaderId(1)).thenReturn(true);
 
         assertThatThrownBy(() -> readerService.deleteReaderById(1))
                 .isInstanceOf(UnavailableOperationException.class)
@@ -131,7 +131,7 @@ class ReaderServiceImplTest {
     @Test
     void deleteReaderById_ShouldDeleteReader_WhenNoBooksExist() {
         when(readerRepository.findById(1)).thenReturn(Optional.of(new Reader()));
-        when(bookService.findBooksByReaderId(1)).thenReturn(List.of());
+        when(bookService.existBooksByReaderId(1)).thenReturn(false);
 
         readerService.deleteReaderById(1);
 
